@@ -1,0 +1,22 @@
+{
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "deno.codeLens.test": true,
+  "deno.enable": true,
+  "deno.codeLens.implementations": false,
+  "deno.codeLens.references": false,
+  "deno.codeLens.referencesAllFunctions": false,
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  },
+  "deno.testing.args": [
+    "--allow-all",
+    "--no-check",
+    "--inspect-brk"
+  ],
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

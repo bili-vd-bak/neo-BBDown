@@ -1,0 +1,26 @@
+{
+	"imports": {
+		"@biliy-deno/danmaku2ass": "jsr:@biliy-deno/danmaku2ass@^0.1.0",
+		"@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.4",
+		"@david/dax": "jsr:@david/dax@^0.41.0",
+		"@ortense/consolestyle": "jsr:@ortense/consolestyle@^1.1.0",
+		"@std/encoding": "jsr:@std/encoding@^0.224.0",
+		"@std/toml": "jsr:@std/toml@^0.224.0",
+		"@types/fluent-ffmpeg": "npm:@types/fluent-ffmpeg@^2.1.24",
+		"@types/make-fetch-happen": "npm:@types/make-fetch-happen@10",
+		"fluent-ffmpeg": "npm:fluent-ffmpeg@^2.1.2",
+		"hash-wasm": "npm:hash-wasm@^4",
+		"make-fetch-happen": "npm:make-fetch-happen@13",
+		"pako": "npm:pako@^2",
+		"qs": "npm:qs@^6"
+	},
+	"fmt": {
+		"useTabs": true,
+		"indentWidth": 2,
+		"semiColons": true,
+		"proseWrap": "preserve",
+		"exclude": [
+			".vscode/"
+		]
+	}
+}

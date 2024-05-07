@@ -1,0 +1,81 @@
+[auth]
+# 有accesskey时优先
+# 使用 WEB API
+# SESSDATA与其他cookies同时填写，越完整防风控越好
+SESSDATA = ""
+cookies = ""
+# 使用 APP API
+# accesskey = ""
+
+[dl]
+# 下载弹幕
+danmaku = true
+# 下载字幕
+subtitle = true
+# 使用PCDN/MCDN (关闭可提速)
+pcdn = true
+# 替换upos (设空不替换)
+# 参考 https://github.com/guozhigq/pilipala/issues/70
+# e.g. upos-sz-mirrorks3b.bilivideo.com
+upos = ""
+
+[video]
+# 视频编码格式
+# 仅以下三种，更换顺序以切换优先级
+codecs = ["hevc", "av1", "avc"]
+
+# 清晰度(请填写对应数字)(参考下表)
+# "480P 清晰" = 32 //免登录
+# 需登录
+# "720P 高清" = 64
+# "720P60 高帧率" = 74
+# "1080P 高清" = 80
+# 需大会员
+# "1080P+ 高码率" = 112
+# "1080P60 高帧率" = 116
+# "4K 超清" = 120
+# "HDR 真彩色" = 125
+# "杜比视界" = 126
+# "8K 超高清" = 127
+qn = 80
+
+# 视频分P
+# 支持范围选择和单集选择
+# 全选： [0,0]
+# 范围： [启始集数(包含),终止集数(包含)] 0表示不限
+# 单集： [0,0,[要下载的集数1，要下载的集数2...]]
+p = [0, 0, []]
+
+[save]
+# 变量
+# <videoTitle>: 视频主标题
+# <pageNumber>: 视频分P序号
+#  不支持  # <pageNumberWithZero>: 视频分P序号(前缀补零)
+# <pageTitle>: 视频分P标题
+# <bvid>: 视频BV号
+# <aid>: 视频aid
+# <cid>: 视频cid
+# <dfn>: 视频清晰度 "1080P 高码率"
+# <res>: 视频分辨率 "1920x1080"
+# <fps>: 视频帧率
+# <videoCodecs>: 视频编码
+# <videoBandwidth>: 视频码率(单位KB)
+# <audioCodecs>: 音频编码
+# <audioBandwidth>: 音频码率(单位KB)
+# <ownerName>: 上传者名称(下载番剧时，该值为"")
+# <ownerMid>: 上传者mid(下载番剧时，该值为"")
+# <publishDate>: 发布时间(yyyy-MM-dd_HH-mm-ss)
+#  不支持  # <apiType>: API类型(TV/APP/INTL/WEB)
+single = "[<aid>]title"
+# 多P视频保存格式
+# ${lan}即字幕语言代号，如"zh-CN" "zh-Hans" "zh-Hant" "en"
+# 视频：${dir}.mp4
+# 弹幕：${dir}.xml  ${dir}.ass
+# 字幕：${dir}.${lan}.srt
+# tips: (兼容BBDown)在下载字幕时，<dfn><codecs>为空值
+dir = "<pageNumber>-----<dfn>-----<videoCodecs>"
+
+[other]
+# 设置命令路径
+aria2c = "aria2c"
+ffmpeg = "ffmpeg"
