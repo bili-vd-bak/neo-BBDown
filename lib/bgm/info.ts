@@ -151,9 +151,10 @@ export default async function main(link: string) {
 Deno.test({
   name: "info main",
   async fn() {
-    const d = await main(
-      "https://www.bilibili.com/bangumi/media/md21231359?spm_id_from=..0.0"
-    );
+    // const d = await main(
+    //   "https://www.bilibili.com/bangumi/media/md21231359?spm_id_from=..0.0"
+    // );
+    const d = await main("ep777121");
     console.log(d);
   },
 });

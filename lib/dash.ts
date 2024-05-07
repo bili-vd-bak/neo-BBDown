@@ -88,6 +88,7 @@ const maxByValue = makeSelect(
 
 function replaceUpos(ori_url: string, ban_pcdn = false, upos?: string) {
   // 参考 https://github.com/guozhigq/pilipala/issues/70
+  // 目前若识别 ban_pcdn 就不会替换upos
   const ori_url_p = new URL(ori_url);
   if (ban_pcdn) {
     if (ori_url_p.host.match(".mcdn.bilivideo"))
@@ -98,8 +99,10 @@ function replaceUpos(ori_url: string, ban_pcdn = false, upos?: string) {
     else if (ori_url_p.host.match("szbdyd.com"))
       return ori_url_p.searchParams.get("xy_usource") || ori_url;
     else
-      "https://proxy-tf-all-ws.bilivideo.com/?url=" +
-        encodeURIComponent(ori_url);
+      return (
+        "https://proxy-tf-all-ws.bilivideo.com/?url=" +
+        encodeURIComponent(ori_url)
+      );
   } else if (upos) {
     if (
       ori_url_p.host.match(
@@ -111,16 +114,16 @@ function replaceUpos(ori_url: string, ban_pcdn = false, upos?: string) {
       return o.toJSON();
     } else return ori_url;
   } else return ori_url;
-  return ori_url;
 }
 
-function findUposUrl(urls: string[]) {
-  for (const url of urls) {
-    const u = new URL(url);
-    if (u.host.match(/upos-.*((\.bilivideo\.(com|cn))|(akamaized.net))/g))
-      return url;
-  }
-  return urls[-1];
+function findUposUrl(urls: string[], ban_pcdn = false, upos?: string) {
+  if (ban_pcdn || upos)
+    for (const url of urls) {
+      const u = new URL(url);
+      if (u.host.match(/upos-.*((\.bilivideo\.(com|cn))|(akamaized.net))/g))
+        return replaceUpos(url, ban_pcdn, upos);
+    }
+  return replaceUpos(urls[-1], ban_pcdn, upos);
 }
 
 export function parser(
@@ -150,8 +153,7 @@ export function parser(
   print.d("音频流：", JSON.stringify(audio));
   return {
     video: {
-      //应该使用backupurl
-      url: replaceUpos(video.baseUrl, !pcdn, upos),
+      url: findUposUrl([video.baseUrl, ...video.backupUrl], !pcdn, upos),
       qn: qn_list[video.id] || "未知",
       codecs: codec_id[video.codecid] || "未知",
       bandwidth: video.bandwidth,
@@ -160,7 +162,7 @@ export function parser(
       height: video.height,
     },
     audio: {
-      url: replaceUpos(audio.baseUrl, !pcdn, upos),
+      url: findUposUrl([audio.baseUrl, ...audio.backupUrl], !pcdn, upos),
       qn: qn_list[audio.id] || "未知",
       codecs: audio.codecs,
       bandwidth: audio.bandwidth,
