@@ -37,7 +37,17 @@ export default async function main(
   if ($.path(cwd + "/" + tmp_file_name).existsSync())
     print.suc("文件存在，跳过下载。");
   else {
-    await r.showProgress().pipeToPath(cwd + "/" + tmp_file_name);
-    print.suc("或手动运行命令：", command);
+    if (config?.dl?.bat_mode) {
+      const pa = $.path(`./runToDL.sh`);
+      if (!pa.existsSync()) pa.writeTextSync("#!/bin/bash");
+      pa.writeTextSync(
+        "\r\n" + config?.dl?.bat_mode === "aria2c"
+          ? command
+          : `${config?.dl?.bat_mode} ${link}`
+      );
+    } else {
+      await r.showProgress().pipeToPath(cwd + "/" + tmp_file_name);
+      print.suc("或手动运行命令：", command);
+    }
   }
 }

@@ -10,6 +10,7 @@ export interface config_type {
     subtitle?: boolean;
     pcdn?: boolean;
     upos?: string;
+    bat_mode?: string;
   };
   video?: { codecs?: codecs[]; qn?: number; p?: [number, number, number[]?] };
   save?: { single?: string; dir?: string };

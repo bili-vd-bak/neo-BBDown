@@ -18,6 +18,10 @@ pcdn = true
 # 参考 https://github.com/guozhigq/pilipala/issues/70
 # e.g. upos-sz-mirrorks3b.bilivideo.com
 upos = ""
+# 仅获取下载链接(设空不启用)
+# 设 aria2c 会使用预设命令
+# 即获取含 <bat_mode> <dl_link> 的sh文件
+bat_mode = ""
 
 [video]
 # 视频编码格式
