@@ -24,7 +24,7 @@ export default async function main(
   $.path(cwd).mkdirSync();
   const command = `${
     config?.other?.aria2c || "./aria2c"
-  } ${basic_args} "${link}" -o ${$.path(cwd + "/" + tmp_file_name).resolve()}`;
+  } ${basic_args} "${link}" -o ${cwd + "/" + tmp_file_name}`;
   // print.p("或手动运行命令：", command);
   // await $`${command}`.cwd(cwd).stdout(Deno.stdout);
   const r = $.request(link).header(
