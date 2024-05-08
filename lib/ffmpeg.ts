@@ -55,7 +55,7 @@ export default async function main(
   print.p("或手动运行命令：", command);
   const pa = $.path(`./runToFFMPEG.sh`);
   if (!pa.existsSync()) pa.writeTextSync("#!/bin/bash");
-  pa.writeTextSync("\r\n" + command);
+  pa.writeTextSync(pa.readTextSync() + "\r\n" + command);
   if ($.commandExistsSync(config?.other?.ffmpeg || "")) {
     await $`${command}`.cwd(cwd).stdout(Deno.stdout);
     $.path(cwd).removeSync();

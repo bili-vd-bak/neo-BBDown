@@ -136,7 +136,9 @@ export function parser(
 ) {
   if (!dash.video || !dash.audio) throw new Error("no video stream");
   const codecIds = codec.map((c) => codec_id[c]);
-  let video: dash_unit_video_and_audio_res = dash.video[0],
+  let video: dash_unit_video_and_audio_res =
+      dash.video.find((v) => v.id >= qn && v.codecid === codecIds[0]) ||
+      dash.video[0],
     audio: dash_unit_video_and_audio_res;
   for (const codecId of codecIds) {
     const v = dash.video.find((v) => v.id === qn && v.codecid === codecId);
