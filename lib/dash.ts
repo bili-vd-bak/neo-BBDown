@@ -90,30 +90,27 @@ function replaceUpos(ori_url: string, ban_pcdn = false, upos?: string) {
   // 参考 https://github.com/guozhigq/pilipala/issues/70
   // 目前若识别 ban_pcdn 就不会替换upos
   const ori_url_p = new URL(ori_url);
-  if (ban_pcdn) {
+  if (
+    upos &&
+    ori_url_p.host.match(
+      /(cn|upos)-.*((\.bilivideo\.(com|cn))|(akamaized.net))/g
+    )
+  ) {
+    // 匹配 BCache/大厂upos/akamai)
+    const o = ori_url_p;
+    o.host = upos;
+    return o.toJSON();
+  } else if (ban_pcdn) {
     if (ori_url_p.host.match(".mcdn.bilivideo"))
+      //此处还应处理ip:port形式
       return (
         "https://proxy-tf-all-ws.bilivideo.com/?url=" +
         encodeURIComponent(ori_url)
       );
     else if (ori_url_p.host.match("szbdyd.com"))
       return ori_url_p.searchParams.get("xy_usource") || ori_url;
-    else
-      return (
-        "https://proxy-tf-all-ws.bilivideo.com/?url=" +
-        encodeURIComponent(ori_url)
-      );
-  } else if (upos) {
-    if (
-      ori_url_p.host.match(
-        /(cn|upos)-.*((\.bilivideo\.(com|cn))|(akamaized.net))/g
-      ) // 匹配 BCache/大厂upos/akamai
-    ) {
-      const o = ori_url_p;
-      o.host = upos;
-      return o.toJSON();
-    } else return ori_url;
-  } else return ori_url;
+  }
+  return ori_url;
 }
 
 function findUposUrl(urls: string[], ban_pcdn = false, upos?: string) {
@@ -136,6 +133,7 @@ export function parser(
 ) {
   if (!dash.video || !dash.audio) throw new Error("no video stream");
   const codecIds = codec.map((c) => codec_id[c]);
+  // 视频流 codecs 处理, 排序问题
   let video: dash_unit_video_and_audio_res =
       dash.video.find((v) => v.id >= qn && v.codecid === codecIds[0]) ||
       dash.video[0],
@@ -150,7 +148,6 @@ export function parser(
   if (dash.flac && dash.flac?.display) audio = dash.flac.audio;
   else if (dash.dolby && dash.dolby?.audio) audio = dash.dolby.audio[0];
   else audio = dash.audio.reduce(maxByValue);
-  // console.debug(dash.audio);
   print.d("视频流：", JSON.stringify(video));
   print.d("音频流：", JSON.stringify(audio));
   return {

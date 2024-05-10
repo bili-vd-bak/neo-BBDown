@@ -41,9 +41,11 @@ export default async function main(
       const pa = $.path(`./runToDL.sh`);
       if (!pa.existsSync()) pa.writeTextSync("#!/bin/bash");
       pa.writeTextSync(
-        pa.readTextSync() + "\r\n" + config?.dl?.bat_mode === "aria2c"
-          ? command
-          : `${config?.dl?.bat_mode} ${link}`
+        pa.readTextSync() +
+          "\r\n" +
+          (config?.dl?.bat_mode === "aria2c"
+            ? command
+            : `${config?.dl?.bat_mode} ${link}`)
       );
     } else {
       await r.showProgress().pipeToPath(cwd + "/" + tmp_file_name);
